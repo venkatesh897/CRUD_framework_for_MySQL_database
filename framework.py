@@ -23,7 +23,6 @@ except FileNotFoundError:
 
 my_cursor.execute("select * from my_table limit 0")
 
-
 column_names =  my_cursor.column_names
 
 max_length_column_name = column_names[0]
