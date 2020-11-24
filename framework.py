@@ -8,7 +8,6 @@ try:
 	with open("menu.cfg") as f_menu:
 		menu = f_menu.read()
 	f_menu.close()
-
 except FileNotFoundError:
 	print(file_not_found_message)
 
@@ -16,14 +15,11 @@ try:
 	with open("promt_messages.cfg") as f_promt_messages:
 		promt_messages = eval(f_promt_messages.read())
 	f_promt_messages.close()
-
 except FileNotFoundError:
 	print(file_not_found_message)
 
 my_cursor.execute("select * from my_table limit 0")
-
 column_names =  my_cursor.column_names
-
 max_length_column_name = column_names[0]
 
 for column_name in column_names:
@@ -80,7 +76,7 @@ def show_record():
 
 def insert_record():
     field_values = []
-    status = 'A'
+    status = 'a'
     field_values.append(status)
     for index in range(1, count_of_fields):
         field_value = input("Enter " + column_names[index] + ": ")
