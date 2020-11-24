@@ -85,7 +85,6 @@ def insert_record():
     my_cursor.execute('INSERT INTO my_table VALUES ' + str(record))
     is_record_saved = my_cursor.rowcount
     connection.commit()
-    print(is_record_saved)
     if is_record_saved > 0:
         print(promt_messages[1])
     else:
@@ -114,7 +113,6 @@ def check_record_present_or_not(id):
 def update_record():
     user_input_id = int(input("Enter ID: "))
     is_record_found = check_record_present_or_not(user_input_id)
-    print(is_record_found)
     if is_record_found:
         with open('updatable_fields.cfg') as f_updatable_fields:
             updatable_fields = eval(f_updatable_fields.read())
@@ -131,7 +129,6 @@ def update_record():
         new_field_values = input("Enter new " + column_names[updatable_fields[user_update_choice - 1]] + ": ")
         my_cursor.execute('UPDATE my_table SET ' + column_names[updatable_fields[user_update_choice - 1]] + ' = ' + "\"" + new_field_values + "\"" + ' WHERE ' + column_names[1] + ' = ' + str(user_input_id))
         is_record_updated = my_cursor.rowcount
-        print(is_record_updated)
         if is_record_updated != 0:
             print(promt_messages[4])
         else:
