@@ -20,7 +20,6 @@ try:
 except FileNotFoundError:
 	print(file_not_found_message)
 
-
 my_cursor.execute("select * from my_table limit 0")
 
 column_names =  my_cursor.column_names
