@@ -1,13 +1,10 @@
 #Program to perform CRUD operation on MySQL database.
 import mysql.connector
 connection = mysql.connector.connect(host = "165.22.14.77", database = "db_Venkatesh" ,user = "Venkatesh", password = "Venkatesh");
-
 my_cursor = connection.cursor(buffered=True,dictionary=True)
-
 file_not_found_message = "File may not exist or error opening the file"
 
 try:
-
 	with open("menu.cfg") as f_menu:
 		menu = f_menu.read()
 	f_menu.close()
@@ -56,7 +53,6 @@ def print_column_names():
 	print("\t")
 	print_pipe()
 
-
 def show_records():
     my_cursor.execute("SELECT * from my_table WHERE STATUS = 'a'")
     records = my_cursor.fetchall()
@@ -92,22 +88,24 @@ def insert_record():
         field_value = input("Enter " + column_names[index] + ": ")
         field_values.append(field_value)
     record = tuple(field_values)
-    is_record_saved = my_cursor.execute('INSERT INTO my_table VALUES ' + str(record)).rowcount
-    my_cursor.commit()
+    my_cursor.execute('INSERT INTO my_table VALUES ' + str(record))
+    is_record_saved = my_cursor.rowcount
+    connection.commit()
+    print(is_record_saved)
     if is_record_saved > 0:
         print(promt_messages[1])
     else:
-        print(promt_messages[2])
+       print(promt_messages[2])
 
 def delete_record():
     user_input_id =int(input("Enter ID: "))
-    is_record_deleted = my_cursor.execute("UPDATE my_table set STATUS = 'i' where ID ="  + str(user_input_id))
+    my_cursor.execute("UPDATE my_table set STATUS = 'i' where ID ="  + str(user_input_id))
+    is_record_deleted = my_cursor.rowcount
     if is_record_deleted != 0:
         print(promt_messages[3])
     else:
         print(promt_messages[0])
     connection.commit()
-
 
 def check_record_present_or_not(id):
     my_cursor.execute('SELECT * FROM my_table WHERE Status = "a" AND ' + column_names[1] + ' = ' + str(id))
@@ -137,13 +135,16 @@ def update_record():
             print("INVALID CHOICE.")
             return
         new_field_values = input("Enter new " + column_names[updatable_fields[user_update_choice - 1]] + ": ")
-        is_record_updated = my_cursor.execute('UPDATE my_table SET ' + column_names[updatable_fields[user_update_choice - 1]] + ' = ' + "\"" + new_field_values + "\"" + ' WHERE ' + column_names[1] + ' = ' + str(user_input_id))
+        my_cursor.execute('UPDATE my_table SET ' + column_names[updatable_fields[user_update_choice - 1]] + ' = ' + "\"" + new_field_values + "\"" + ' WHERE ' + column_names[1] + ' = ' + str(user_input_id))
+        is_record_updated = my_cursor.rowcount
+        print(is_record_updated)
         if is_record_updated != 0:
             print(promt_messages[4])
         else:
             print(promt_messages[5])
     else:
         print(promt_messages[0])
+    connection.commit()
 
 functions_list = [insert_record, show_records, show_record, update_record, delete_record, exit]
 
@@ -163,5 +164,4 @@ while True:
             functions_list[user_option - 1]()
     else:
         print("INVALID INPUT")
-        
 connection.close()
